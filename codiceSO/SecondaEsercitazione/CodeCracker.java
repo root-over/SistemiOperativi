@@ -4,6 +4,7 @@ import java.util.Random;
 
 
 public class CodeCracker implements Runnable{
+    StringBuilder codice= new StringBuilder();
     ArrayList<Integer> ar = new ArrayList<>();
 
     @Override
@@ -11,7 +12,6 @@ public class CodeCracker implements Runnable{
         Random r = new Random();
         int len =0;
         int num = r.nextInt(Integer.MAX_VALUE);
-        StringBuilder codice= new StringBuilder();
         if (ar.contains(num)) {
             Thread.currentThread().interrupt();
         }
