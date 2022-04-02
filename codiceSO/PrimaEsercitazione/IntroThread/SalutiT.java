@@ -1,4 +1,4 @@
-package PrimaEsercitazione;
+package PrimaEsercitazione.IntroThread;
 
 public class SalutiT extends Thread{ //creo la classe estendendo la classe thread
 

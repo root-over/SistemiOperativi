@@ -1,4 +1,4 @@
-package PrimaEsercitazione;
+package PrimaEsercitazione.stampe;
 
 public class StampanteR {
     public class StampanteT implements Runnable {

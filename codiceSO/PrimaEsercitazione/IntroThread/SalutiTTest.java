@@ -1,4 +1,4 @@
-package PrimaEsercitazione;
+package PrimaEsercitazione.IntroThread;
 
 public class SalutiTTest {
     public static void main(String[] args) {

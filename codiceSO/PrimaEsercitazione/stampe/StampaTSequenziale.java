@@ -1,4 +1,4 @@
-package PrimaEsercitazione;
+package PrimaEsercitazione.stampe;
 
 public class StampaTSequenziale {
     public static void main(String[] args) {

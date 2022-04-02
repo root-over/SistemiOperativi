@@ -1,4 +1,4 @@
-package PrimaEsercitazione;
+package PrimaEsercitazione.stampe;
 
 public class StampanteT extends Thread{
     private int da;
