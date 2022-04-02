@@ -1,4 +1,4 @@
-package PrimaEsercitazione_CreazioneThread;
+package PrimaEsercitazione;
 
 public class SalutiR implements Runnable{
     private String nome; //Instanzo una variabile che contine il nome del thread

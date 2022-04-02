@@ -1,4 +1,4 @@
-package PrimaEsercitazione_CreazioneThread;
+package PrimaEsercitazione;
 
 public class StampanteR {
     public class StampanteT implements Runnable {

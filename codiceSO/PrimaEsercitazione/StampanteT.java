@@ -1,4 +1,4 @@
-package PrimaEsercitazione_CreazioneThread;
+package PrimaEsercitazione;
 
 public class StampanteT extends Thread{
     private int da;

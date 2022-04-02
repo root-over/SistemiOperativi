@@ -1,4 +1,4 @@
-package PrimaEsercitazione_CreazioneThread;
+package PrimaEsercitazione;
 
 public class SalutiTTest {
     public static void main(String[] args) {
