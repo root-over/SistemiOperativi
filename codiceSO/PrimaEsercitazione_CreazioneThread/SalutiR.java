@@ -1,7 +1,7 @@
 package PrimaEsercitazione_CreazioneThread;
 
 public class SalutiR implements Runnable{
-    private final String nome; //Instanzo una variabile che contine il nome del thread
+    private String nome; //Instanzo una variabile che contine il nome del thread
 
     public SalutiR(String nome){ //Creo un costruttore che passi pubblicamente il nome del thread
         this.nome=nome;
