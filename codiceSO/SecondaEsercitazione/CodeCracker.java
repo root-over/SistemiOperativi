@@ -17,39 +17,39 @@ import java.util.Random;
 import java.lang.*;
 
 
-public class CodeCracker implements Runnable{
-    ArrayList<Integer> ar = new ArrayList<>();
+public class CodeCracker extends Thread{
+    private int da;
+    private final int a;
+    StringBuilder codice = new StringBuilder();
 
-    @Override
+    public CodeCracker(int da, int a){
+        this.da=da;
+        this.a=a;
+    }
+
+    @Override //TODO 214748365 > 2147483647
     public void run() {
-        while (ar.size()<Integer.MAX_VALUE) {
-            Random r = new Random();
-            StringBuilder codice = new StringBuilder();
+        while (da<=a) {
             int len = 0;
-            int num = r.nextInt(Integer.MAX_VALUE);
-            if (ar.contains(num)) {
-                Thread.currentThread().interrupt();
-            }
-            ar.add(num);
-            len = 16 - String.valueOf(num).length();
-            for (int i = 0; i < len; i++) {
-                codice.append("0");
-            }
-            codice.append(String.valueOf(num));
+            len = 16 - String.valueOf(da).length();
+            codice.append("0".repeat(Math.max(0, len)));
+            codice.append(da);
+            da+=1;
             try {
                 decripta(codice.toString());
+                codice= new StringBuilder("");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+
     private void decripta(String codice) throws Exception {
         String key = codice;
         File inputFile = new File("document.txt");
         File encryptedFile = new File("/home/root_over/Documents/Universita/Anno 2/Sistemi operativi/Eserciztazioni/codiceSO/SecondaEsercitazione/document2022.encrypted");
-        File decryptedFile = new File("/home/root_over/Documents/Universita/Anno 2/Sistemi operativi/Eserciztazioni/codiceSO/SecondaEsercitazione/prove/document2022.decrypted");
-
+        File decryptedFile = new File("/home/root_over/Documents/Universita/Anno 2/Sistemi operativi/Eserciztazioni/codiceSO/SecondaEsercitazione/document2022.decrypted");
         try{
             CryptoUtils.decrypt(key,encryptedFile,decryptedFile);
         }catch (CryptoException ex){
@@ -59,20 +59,17 @@ public class CodeCracker implements Runnable{
     }
 
     public static void main(String[] args) {
-        CodeCracker CC1 = new CodeCracker();
-        Thread t1 = new Thread(CC1);
-        CodeCracker CC2 = new CodeCracker();
-        Thread t2 = new Thread(CC2);
-        CodeCracker CC3 = new CodeCracker();
-        Thread t3 = new Thread(CC3);
-        CodeCracker CC4 = new CodeCracker();
-        Thread t4 = new Thread(CC4);
-        CodeCracker CC5 = new CodeCracker();
-        Thread t5 = new Thread(CC5);
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t5.start();
+        int M=10;
+        int da=0;
+        int a=214748364;
+        Thread[] threads = new Thread[M];
+        for (int i=0; i<M; i++){
+            threads[i] = new CodeCracker(da,a);
+            da=a+1;
+            a=a+a;
+        }
+        for (int i=0; i<M; i++){
+            threads[i].start();
         }
     }
+}

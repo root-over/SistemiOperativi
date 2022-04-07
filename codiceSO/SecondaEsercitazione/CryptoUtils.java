@@ -1,14 +1,10 @@
 package SecondaEsercitazione;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +26,7 @@ public class CryptoUtils {
     private static void doCrypto(int cipherMode, String key, File inputFile,
                                  File outputFile) throws CryptoException {
         try {
+            System.out.println("Provo la chiave"+key);
             Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(cipherMode, secretKey);
@@ -49,5 +46,6 @@ public class CryptoUtils {
                 | IllegalBlockSizeException | IOException ex) {
             System.out.println("codice sbagliato");
         }
+        System.out.println("CODICE ESATOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     }
 }
