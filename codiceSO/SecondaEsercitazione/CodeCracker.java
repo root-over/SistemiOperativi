@@ -7,7 +7,7 @@ import java.security.*;
 
 
 public class CodeCracker extends Thread{
-    private int da=0;
+    private int da;
     private int a=0;
     //Prendo i file
     File encryptedFile = new File("/home/root_over/Documents/Universita/Anno 2/Sistemi operativi/Eserciztazioni/codiceSO/SecondaEsercitazione/document2022.encrypted");
@@ -30,7 +30,7 @@ public class CodeCracker extends Thread{
 
     }
 
-    @Override //TODO 0 > 214748365 > 2147483647
+    @Override //TODO 0 > 214748365 > 2147483647 >
     public void run() {
         while (da<=a) {
             int len;
@@ -40,7 +40,7 @@ public class CodeCracker extends Thread{
             da+=1;
             try {
                 decripta(codice.toString(),getByte());
-                codice= new StringBuilder("");
+                codice= new StringBuilder();
             } catch (Exception e) {
                 e.printStackTrace();
             }
