@@ -1,14 +1,9 @@
 package SecondaEsercitazione;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.lang.*;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 
 
 public class CodeCracker extends Thread{
@@ -21,12 +16,12 @@ public class CodeCracker extends Thread{
     StringBuilder codice = new StringBuilder();
 
     //FATTO
-    public CodeCracker(int da, int a) throws FileNotFoundException {
+    public CodeCracker(int da, int a){
         this.da=da;
         this.a=a;
     }
 
-    //prendo i byte dei file
+    //prendo i byte del file
     private byte[] getByte () throws IOException {
         FileInputStream inputStream = new FileInputStream(encryptedFile);
         byte[] inputBytes = new byte[(int) encryptedFile.length()];
@@ -37,9 +32,8 @@ public class CodeCracker extends Thread{
 
     @Override //TODO 0 > 214748365 > 2147483647
     public void run() {
-        System.out.println("Thread inizia da "+da+" a "+a);
         while (da<=a) {
-            int len = 0;
+            int len;
             len = 16 - String.valueOf(da).length();
             codice.append("0".repeat(Math.max(0, len)));
             codice.append(da);
@@ -55,24 +49,22 @@ public class CodeCracker extends Thread{
     }
 
 
-    private String decripta(String codice, byte[] input){
-        String key = codice;
+    private void decripta(String codice, byte[] input){
         try{
-            Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
+            Key secretKey = new SecretKeySpec(codice.getBytes(), "AES");
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] outputBytes = cipher.doFinal(input);
-            System.out.println("\u001B[32m"+"LA CHIAVE E': "+key+"\u001B[0m");
+            byte[] outputBytes = cipher.doFinal(input); //COME QUELLE CHIAVI PASSANO OLTRE QUESTO CODICE?
+            System.out.println("\u001B[32m"+"LA CHIAVE E': "+ codice +"\u001B[0m");
             FileOutputStream outputStream = new FileOutputStream(decryptedFile);
             outputStream.write(outputBytes);
             System.exit(-1);
         }catch(NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | IOException ignored) {
         }
-            return key;
     }
-    //TODO RICORDA DI CHIUDERE I FILE QUANDO TROVA IL CODICE
+
 //FATTO
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args){
         int M=10;
         int val = 214748364;
         int da=0;
