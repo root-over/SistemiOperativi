@@ -17,11 +17,11 @@ public class CodeCracker extends Thread{
     //Prendo i file
     File encryptedFile = new File("/home/root_over/Documents/Universita/Anno 2/Sistemi operativi/Eserciztazioni/codiceSO/SecondaEsercitazione/document2022.encrypted");
     File decryptedFile = new File("/home/root_over/Documents/Universita/Anno 2/Sistemi operativi/Eserciztazioni/codiceSO/SecondaEsercitazione/document2022.decrypted");
-
+    byte[] input = new byte[(int)encryptedFile.length()];
     StringBuilder codice = new StringBuilder();
 
     //FATTO
-    public CodeCracker(int da, int a) {
+    public CodeCracker(int da, int a) throws FileNotFoundException {
         this.da=da;
         this.a=a;
     }
@@ -32,6 +32,7 @@ public class CodeCracker extends Thread{
         byte[] inputBytes = new byte[(int) encryptedFile.length()];
         inputStream.read(inputBytes);
         return inputBytes;
+
     }
 
     @Override //TODO 0 > 214748365 > 2147483647
@@ -54,27 +55,20 @@ public class CodeCracker extends Thread{
     }
 
 
-    private void decripta(String codice, byte[]input) {
+    private String decripta(String codice, byte[] input){
         String key = codice;
         try{
             Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            System.out.println("USO LA CHIAVE "+key);
             byte[] outputBytes = cipher.doFinal(input);
             System.out.println("\u001B[32m"+"LA CHIAVE E': "+key+"\u001B[0m");
-            System.exit(-1);
             FileOutputStream outputStream = new FileOutputStream(decryptedFile);
             outputStream.write(outputBytes);
-            BufferedReader br = new BufferedReader(new FileReader(decryptedFile));
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-        }catch(NoSuchPaddingException | NoSuchAlgorithmException
-                | InvalidKeyException | BadPaddingException
-                | IllegalBlockSizeException | IOException ex){
+            System.exit(-1);
+        }catch(NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | IOException ignored) {
         }
+            return key;
     }
     //TODO RICORDA DI CHIUDERE I FILE QUANDO TROVA IL CODICE
 //FATTO
