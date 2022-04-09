@@ -30,7 +30,7 @@ public class CodeCracker extends Thread{
 
     }
 
-    @Override //TODO 0 > 214748365 > 2147483647 >
+    @Override //TODO 0 > 214748365 > 2147483647
     public void run() {
         while (da<=a) {
             int len;
@@ -69,6 +69,9 @@ public class CodeCracker extends Thread{
         int val = 214748364;
         int da=0;
         int a=214748364;
+        //TODO Creare un instanza della classe e prendere i byte da getByte direttamente da qui
+        //senza farli prendere dal run;
+        //Forse sto sparando una cazzata
         Thread[] threads = new Thread[M];
         for (int i=0; i<M; i++){
             threads[i] = new CodeCracker(da,a);
