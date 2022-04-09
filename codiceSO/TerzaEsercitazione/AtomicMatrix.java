@@ -12,19 +12,22 @@ public class AtomicMatrix extends Thread {
     int [][]mat;
     boolean NoM; //Se true i thread modificano le righe se false le colonne
 
-    public AtomicMatrix(int n, int m, int x,int val, boolean NoM){
+    public AtomicMatrix(int n, int m, int x,int val, boolean NoM, int[][]mat){
         this.n=n;
         this.m=m;
         this.x=x;
         this.val=val;
         this.NoM=NoM;
+        this.mat=mat;
     }
-    public AtomicMatrix(){
-
+    public AtomicMatrix(int n, int m){
+        this.m=m;
+        this.n=n;
     }
 
-    private void generaMatrice(){
+    private int[][] generaMatrice(){
         mat = new int[n][m];
+        return mat;
     }
 
     private int[][] inizializza(int[][]mat){
@@ -68,16 +71,21 @@ public class AtomicMatrix extends Thread {
         Scanner scx = new Scanner(System.in);
         System.out.println("Quante volte vuoi ripetere l'operazione?: ");
         int x = scx.nextInt();
-        //TODO Attualmente ogni thread genera la sua matrice poichè la generazione avviene nel run
-        //TODO capire come condividere la stessa matrice tra i thread
+
+        AtomicMatrix AM = new AtomicMatrix(n,m);
+        int[][] matix = AM.inizializza(AM.generaMatrice());
+
+        //TODO La matrice che ogni thread assume è matrix ed è vuota, quindi ogni thread compone la sua matrice, non lavorano tutti
+        //sulla stessa
+        //TODO Trova un modo per risolvere
         Thread[] threadsm = new Thread[m];
         Thread[] threadsn = new Thread[n];
 
         for (int i=0; i<m; i++) {
-            threadsm[i] = new AtomicMatrix(n, m, x, i,false);
+            threadsm[i] = new AtomicMatrix(n, m, x, i,false,matix);
         }
         for (int i=0; i<n; i++) {
-            threadsn[i] = new AtomicMatrix(n, m, x, i,true);
+            threadsn[i] = new AtomicMatrix(n, m, x, i,true,matix);
         }
         for (int i=0; i<m; i++){
             threadsm[i].start();
@@ -85,7 +93,6 @@ public class AtomicMatrix extends Thread {
         for (int i=0; i<n; i++){
             threadsn[i].start();
         }
-        System.out.print(Arrays.deepToString(mat));
 
     }
 }
