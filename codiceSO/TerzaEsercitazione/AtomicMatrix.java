@@ -2,12 +2,14 @@ package TerzaEsercitazione;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class AtomicMatrix extends Thread {
     int n,m;
     int x; //Numero di volte che deve essere eseguito l'incremento/decremento
     int val=1; //Questa varibile decide la riga o la colonna che il thread deve ricevere
-    static int [][]mat;
+    static AtomicIntegerArray mat;
     boolean NoM; //Se true i thread modificano le righe se false le colonne
 
     public AtomicMatrix(int n, int m, int x,int val, boolean NoM){
@@ -22,15 +24,14 @@ public class AtomicMatrix extends Thread {
         this.n=n;
     }
 
-    private int[][] generaMatrice(){
-        mat = new int[n][m];
-        return mat;
+    private void generaMatrice(){
+        mat = new AtomicIntegerArray(n);
     }
 
-    private void inizializza(int[][]mat){
+    private void inizializza(){
         for (int i=0; i<n-1; i++){
             for (int j=0; j<m-1; j++){
-                mat[i][j]=0;
+                mat[i][j] = new AtomicInteger(0);
             }
         }
     }
@@ -41,7 +42,7 @@ public class AtomicMatrix extends Thread {
             for (int i=0; i<n; i++){
                 int x2=x;
                 while (x2>0) {
-                    mat[val][i] = mat[val][i] - 1;
+                    mat[val][i].addAndGet(1);
                     x2--;
                 }
             }
@@ -50,7 +51,7 @@ public class AtomicMatrix extends Thread {
             for (int j=0; j<m; j++){
                 int x2=x;
                 while (x2>0) {
-                    mat[j][val] = mat[j][val] + 1;
+                    mat[j][val].addAndGet(1);
                     x2--;
                 }
             }
@@ -69,7 +70,8 @@ public class AtomicMatrix extends Thread {
         int x = scx.nextInt();
 
         AtomicMatrix AM = new AtomicMatrix(n,m);
-        AM.inizializza(AM.generaMatrice());
+        AM.generaMatrice();
+        AM.inizializza();
 
         //TODO La matrice che ogni thread assume è matrix ed è vuota, quindi ogni thread compone la sua matrice, non lavorano tutti
         //sulla stessa
