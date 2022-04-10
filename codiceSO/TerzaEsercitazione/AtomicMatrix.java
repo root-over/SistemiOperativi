@@ -1,7 +1,5 @@
 package TerzaEsercitazione;
 
-import SecondaEsercitazione.CodeCracker;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -9,16 +7,15 @@ public class AtomicMatrix extends Thread {
     int n,m;
     int x; //Numero di volte che deve essere eseguito l'incremento/decremento
     int val=1; //Questa varibile decide la riga o la colonna che il thread deve ricevere
-    int [][]mat;
+    static int [][]mat;
     boolean NoM; //Se true i thread modificano le righe se false le colonne
 
-    public AtomicMatrix(int n, int m, int x,int val, boolean NoM, int[][]mat){
+    public AtomicMatrix(int n, int m, int x,int val, boolean NoM){
         this.n=n;
         this.m=m;
         this.x=x;
         this.val=val;
         this.NoM=NoM;
-        this.mat=mat;
     }
     public AtomicMatrix(int n, int m){
         this.m=m;
@@ -30,13 +27,12 @@ public class AtomicMatrix extends Thread {
         return mat;
     }
 
-    private int[][] inizializza(int[][]mat){
+    private void inizializza(int[][]mat){
         for (int i=0; i<n-1; i++){
             for (int j=0; j<m-1; j++){
                 mat[i][j]=0;
             }
         }
-        return mat;
     }
 
     //Metodo eseguito dai threads
@@ -73,7 +69,7 @@ public class AtomicMatrix extends Thread {
         int x = scx.nextInt();
 
         AtomicMatrix AM = new AtomicMatrix(n,m);
-        int[][] matix = AM.inizializza(AM.generaMatrice());
+        AM.inizializza(AM.generaMatrice());
 
         //TODO La matrice che ogni thread assume è matrix ed è vuota, quindi ogni thread compone la sua matrice, non lavorano tutti
         //sulla stessa
@@ -82,10 +78,10 @@ public class AtomicMatrix extends Thread {
         Thread[] threadsn = new Thread[n];
 
         for (int i=0; i<m; i++) {
-            threadsm[i] = new AtomicMatrix(n, m, x, i,false,matix);
+            threadsm[i] = new AtomicMatrix(n, m, x, i,false);
         }
         for (int i=0; i<n; i++) {
-            threadsn[i] = new AtomicMatrix(n, m, x, i,true,matix);
+            threadsn[i] = new AtomicMatrix(n, m, x, i,true);
         }
         for (int i=0; i<m; i++){
             threadsm[i].start();
@@ -93,6 +89,7 @@ public class AtomicMatrix extends Thread {
         for (int i=0; i<n; i++){
             threadsn[i].start();
         }
+        System.out.println(Arrays.deepToString(mat));
 
     }
 }
