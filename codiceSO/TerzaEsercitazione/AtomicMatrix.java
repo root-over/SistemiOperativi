@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
-
+//TODO VALORI SPORCHI CON LA MATRICE ATOMICA?!?
 public class AtomicMatrix extends Thread {
     int n,m;
     int x; //Numero di volte che deve essere eseguito l'incremento/decremento
     int val=1; //Questa varibile decide la riga o la colonna che il thread deve ricevere
-    static AtomicIntegerArray mat;
+    static AtomicInteger[][] mat;
     boolean NoM; //Se true i thread modificano le righe se false le colonne
 
     public AtomicMatrix(int n, int m, int x,int val, boolean NoM){
@@ -25,12 +25,12 @@ public class AtomicMatrix extends Thread {
     }
 
     private void generaMatrice(){
-        mat = new AtomicIntegerArray(n);
+        mat = new AtomicInteger[n][m];
     }
 
     private void inizializza(){
-        for (int i=0; i<n-1; i++){
-            for (int j=0; j<m-1; j++){
+        for (int i=0; i<n; i++){
+            for (int j=0; j<m; j++){
                 mat[i][j] = new AtomicInteger(0);
             }
         }
@@ -38,17 +38,17 @@ public class AtomicMatrix extends Thread {
 
     //Metodo eseguito dai threads
     public void run(){
-        if (NoM){ //Se è un thread N (righe)
-            for (int i=0; i<n; i++){
+        if (NoM){ //Se è un thread M (colonne) [addiziona]
+            for (int i=0; i<m; i++){
                 int x2=x;
                 while (x2>0) {
-                    mat[val][i].addAndGet(1);
+                    mat[val][i].addAndGet(-1);
                     x2--;
                 }
             }
         }
-        else { //Se è un thread M (colonne)
-            for (int j=0; j<m; j++){
+        else { //Se è un thread N (righe) [sottrae]
+            for (int j=0; j<n; j++){
                 int x2=x;
                 while (x2>0) {
                     mat[j][val].addAndGet(1);
@@ -73,9 +73,6 @@ public class AtomicMatrix extends Thread {
         AM.generaMatrice();
         AM.inizializza();
 
-        //TODO La matrice che ogni thread assume è matrix ed è vuota, quindi ogni thread compone la sua matrice, non lavorano tutti
-        //sulla stessa
-        //TODO Trova un modo per risolvere
         Thread[] threadsm = new Thread[m];
         Thread[] threadsn = new Thread[n];
 

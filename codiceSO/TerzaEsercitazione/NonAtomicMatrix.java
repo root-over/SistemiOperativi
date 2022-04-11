@@ -8,7 +8,7 @@ public class NonAtomicMatrix extends Thread{
         int x; //Numero di volte che deve essere eseguito l'incremento/decremento
         int val=1; //Questa varibile decide la riga o la colonna che il thread deve ricevere
         static int [][]mat;
-        boolean NoM; //Se true i thread modificano le righe se false le colonne
+        boolean NoM; //Se false i thread modificano le righe se true le colonne
 
         public NonAtomicMatrix(int n, int m, int x,int val, boolean NoM){
             this.n=n;
@@ -28,8 +28,8 @@ public class NonAtomicMatrix extends Thread{
         }
 
         private void inizializza(int[][]mat){
-            for (int i=0; i<n-1; i++){
-                for (int j=0; j<m-1; j++){
+            for (int i=0; i<n; i++){
+                for (int j=0; j<m; j++){
                     mat[i][j]=0;
                 }
             }
@@ -37,8 +37,8 @@ public class NonAtomicMatrix extends Thread{
 
         //Metodo eseguito dai threads
         public void run(){
-            if (NoM){ //Se è un thread N (righe)
-                for (int i=0; i<n; i++){
+            if (NoM){ //Se è un thread M (colonne) [addiziona]
+                for (int i=0; i<m; i++){
                     int x2=x;
                     while (x2>0) {
                         mat[val][i] = mat[val][i] - 1;
@@ -46,8 +46,8 @@ public class NonAtomicMatrix extends Thread{
                     }
                 }
             }
-            else { //Se è un thread M (colonne)
-                for (int j=0; j<m; j++){
+            else { //Se è un thread N (righe) [sottrae]
+                for (int j=0; j<n; j++){
                     int x2=x;
                     while (x2>0) {
                         mat[j][val] = mat[j][val] + 1;
@@ -71,17 +71,14 @@ public class NonAtomicMatrix extends Thread{
             NonAtomicMatrix AM = new NonAtomicMatrix(n,m);
             AM.inizializza(AM.generaMatrice());
 
-            //TODO La matrice che ogni thread assume è matrix ed è vuota, quindi ogni thread compone la sua matrice, non lavorano tutti
-            //sulla stessa
-            //TODO Trova un modo per risolvere
             Thread[] threadsm = new Thread[m];
             Thread[] threadsn = new Thread[n];
 
             for (int i=0; i<m; i++) {
                 threadsm[i] = new NonAtomicMatrix(n, m, x, i,false);
             }
-            for (int i=0; i<n; i++) {
-                threadsn[i] = new NonAtomicMatrix(n, m, x, i,true);
+            for (int j=0; j<n; j++) {
+                threadsn[j] = new NonAtomicMatrix(n, m, x, j,true);
             }
             for (int i=0; i<m; i++){
                 threadsm[i].start();
