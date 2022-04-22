@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class NonAtomicMatrix extends Thread{
         int n,m;
         int x; //Numero di volte che deve essere eseguito l'incremento/decremento
-        int val=1; //Questa varibile decide la riga o la colonna che il thread deve ricevere
+        int val; //Questa varibile decide la riga o la colonna che il thread deve ricevere
         static int [][]mat;
         boolean NoM; //Se false i thread modificano le righe se true le colonne
 

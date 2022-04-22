@@ -3,12 +3,11 @@ package TerzaEsercitazione;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 //TODO VALORI SPORCHI CON LA MATRICE ATOMICA?!?
 public class AtomicMatrix extends Thread {
     int n,m;
     int x; //Numero di volte che deve essere eseguito l'incremento/decremento
-    int val=1; //Questa varibile decide la riga o la colonna che il thread deve ricevere
+    int val; //Questa varibile decide la riga o la colonna che il thread deve ricevere
     static AtomicInteger[][] mat;
     boolean NoM; //Se true i thread modificano le righe se false le colonne
 
