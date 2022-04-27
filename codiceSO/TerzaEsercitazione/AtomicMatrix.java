@@ -3,7 +3,6 @@ package TerzaEsercitazione;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-//TODO VALORI SPORCHI CON LA MATRICE ATOMICA?!?
 public class AtomicMatrix extends Thread {
     int n,m;
     int x; //Numero di volte che deve essere eseguito l'incremento/decremento
@@ -57,7 +56,7 @@ public class AtomicMatrix extends Thread {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner scn = new Scanner(System.in);
         System.out.println("Dammi le righe della matrice: ");
         int n = scn.nextInt();
@@ -86,6 +85,12 @@ public class AtomicMatrix extends Thread {
         }
         for (int i=0; i<n; i++){
             threadsn[i].start();
+        }
+        for (int i=0; i<m; i++){
+            threadsm[i].join();
+        }
+        for (int i=0; i<n; i++){
+            threadsn[i].join();
         }
         System.out.println(Arrays.deepToString(mat));
 
