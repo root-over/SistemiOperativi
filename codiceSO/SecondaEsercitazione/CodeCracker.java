@@ -4,6 +4,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.lang.*;
 import java.security.*;
+import java.util.Arrays;
 
 
 public class CodeCracker extends Thread{
@@ -55,10 +56,16 @@ public class CodeCracker extends Thread{
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] outputBytes = cipher.doFinal(input); //COME QUELLE CHIAVI PASSANO OLTRE QUESTO CODICE?
-            System.out.println("\u001B[32m"+"LA CHIAVE E': "+ codice +"\u001B[0m");
-            FileOutputStream outputStream = new FileOutputStream(decryptedFile);
-            outputStream.write(outputBytes);
-            System.exit(-1);
+            if (Arrays.toString(outputBytes).contains("SISOP-corsoB")){
+                System.out.println("\u001B[32m"+"LA CHIAVE E': "+ codice +"\u001B[0m");
+                FileOutputStream outputStream = new FileOutputStream(decryptedFile);
+                outputStream.write(outputBytes);
+                System.exit(-1);
+            }
+            else {
+                System.out.println(Arrays.toString(outputBytes));
+                System.out.println("Chiave errata");
+            }
         }catch(NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | IOException ignored) {
         }
     }

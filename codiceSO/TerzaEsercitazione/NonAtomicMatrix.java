@@ -57,7 +57,7 @@ public class NonAtomicMatrix extends Thread{
             }
         }
 
-        public static void main(String[] args) {
+        public static void main(String[] args) throws InterruptedException {
             Scanner scn = new Scanner(System.in);
             System.out.println("Dammi le righe della matrice: ");
             int n = scn.nextInt();
@@ -85,6 +85,12 @@ public class NonAtomicMatrix extends Thread{
             }
             for (int i=0; i<n; i++){
                 threadsn[i].start();
+            }
+            for (int i=0; i<m; i++){
+                threadsm[i].join();
+            }
+            for (int i=0; i<n; i++){
+                threadsn[i].join();
             }
             System.out.println(Arrays.deepToString(mat));
 

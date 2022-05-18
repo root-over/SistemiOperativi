@@ -9,12 +9,9 @@ public abstract class matriceAbstract {
         this.mat=mat;
     }
 
-    public int[][] inizializza(){
-        for (int i=0; i<mat.length; i++){
-            Arrays.fill(mat[i], 0);
-        }
-        return mat;
-    }
+    public abstract void incrementa(int colonna) throws InterruptedException;
+
+    public abstract void decrementa(int riga) throws InterruptedException;
 
     public String toString(){
         String s="";
