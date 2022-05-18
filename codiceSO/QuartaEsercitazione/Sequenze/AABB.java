@@ -1,32 +1,36 @@
-package QuartaEsercitazione;
+package QuartaEsercitazione.Sequenze;
 
 import java.util.concurrent.Semaphore;
 
-public class AB {
-    private static Semaphore semA = new Semaphore(1);
+public class AABB {
+    private static Semaphore semA = new Semaphore(2);
     private static Semaphore semB = new Semaphore(0);
 
     static class A extends Thread{
-        public void run(){
+        @Override
+        public void run() {
             try {
                 semA.acquire();
                 System.out.print("A");
-                semB.release();
+                semA.acquire();
+                System.out.print("A ");
+                semB.release(2);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
 
         }
     }
+
     static class B extends Thread{
-        public void run(){
+        @Override
+        public void run() {
             try {
                 semB.acquire();
+                System.out.print("B");
+                semB.acquire();
                 System.out.print("B ");
-                semA.release();
-            }
-            catch (InterruptedException e){
-                throw new RuntimeException(e);
+                semA.release(2);
+            }catch (InterruptedException e){
             }
         }
     }
@@ -36,10 +40,8 @@ public class AB {
             new A().start();
             new B().start();
             try {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e){
-                throw new RuntimeException(e);
+                Thread.sleep(10);
+            }catch (InterruptedException e){
             }
         }
     }

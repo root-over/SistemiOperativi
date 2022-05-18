@@ -76,6 +76,10 @@ public class FuniviaSem extends Funivia{
     }
 
     @Override
+    public void turistaScendi() throws InterruptedException {
+
+    }
+
     public void turistaScendi(int t) throws InterruptedException {
         if (t==TuristaPiedi){
             PermettiUsictaPiedi.acquire();
